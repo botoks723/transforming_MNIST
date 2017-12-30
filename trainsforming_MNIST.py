@@ -122,12 +122,6 @@ test_data, test_label = create_test_data()
 test_data = np.array(test_data).astype(np.float32)
 test_label = np.array(test_label).astype(np.float32)
 
-
-m_input = train_data[0:128]
-test = m_input[0]
-test = np.reshape(test,(-1,784))
-test = np.array(test).astype(np.float32)
-
 #generator 함수의 outputs을  변수 G_log_prob과 G_prob에 저장합니다.
 G_log_prob, G_prob = generator(Z)
 
@@ -168,6 +162,10 @@ for epoch in range(training_epoch):
         batch_ys = train_label[start:end]
         G_train_feed_dict = {Z: batch_xs, output_data: batch_ys}
         if i % 1000 == 0:
+            test = batch_xs[0]
+            test = np.reshape(test, (-1, 784))
+            test = np.array(test).astype(np.float32)
+            
             samples = sess.run(G_log_prob, feed_dict={Z: test})
             fig = plot(samples)
             plt.savefig('out/{}.png'.format(str(i).zfill(3)), bbox_inches='tight')
